@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliteEstate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            padding: 1.2rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1a365d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1a365d;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #4299e1;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                        url('https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Search Section */
+        .search-container {
+            background: rgba(255,255,255,0.95);
+            padding: 2.5rem;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        input, select {
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            flex: 1;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        /* Properties Section */
+        .properties {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: #1a365d;
+        }
+
+        .add-property-btn {
+            background-color: #48bb78;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .add-property-btn:hover {
+            background-color: #38a169;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .property-image {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .property-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: #4299e1;
+            color: white;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .property-info {
+            padding: 1.5rem;
+        }
+
+        .price {
+            color: #1a365d;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-details {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            color: #4a5568;
+        }
+
+        .property-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            flex: 1;
+        }
+
+        .edit-btn {
+            background-color: #4299e1;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #e53e3e;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #2b6cb0;
+        }
+
+        .delete-btn:hover {
+            background-color: #c53030;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .property-card {
+                margin: 0 auto;
+                max-width: 400px;
+            }
+        }
+
+        /* Add these new styles after existing styles */
+        .contact-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contact-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #1a365d;
+        }
+
+        .contact-info {
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .contact-item h3 {
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .contact-phone {
+            color: #4299e1;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Anurag Real Estate</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="add-property.html">Properties</a>
+                <a href="about.html">About</a>
+                <a href="#contact">Contact</a>
+                <a href="login.html" style="background: #4299e1; color: white; padding: 0.5rem 1rem; border-radius: 5px;">Login/Register</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Find Your Dream Property</h1>
+            <p>Discover luxury homes and premium properties in prime locations</p>
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" placeholder="Enter location">
+                    <select>
+                        <option value="">Property Type</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="house">House</option>
+                        <option value="villa">Villa</option>
+                        <option value="penthouse">Penthouse</option>
+                    </select>
+                    <select>
+                        <option value="">Price Range</option>
+                        <option value="0-500000">$0 - $500,000</option>
+                        <option value="500000-1000000">$500,000 - $1M</option>
+                        <option value="1000000-plus">$1M+</option>
+                    </select>
+                    <button onclick="searchProperties()" class="add-property-btn">Search</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="properties">
+        <div class="section-header">
+            <h2>Featured Properties</h2>
+            <a href="add-property.html" class="add-property-btn">+ Add Property</a>
+        </div>
+        <div class="properties-grid" id="propertiesGrid"></div>
+    </section>
+
+    <div class="contact-modal" id="contactModal">
+        <div class="contact-content">
+            <span class="close-btn" onclick="closeContact()">&times;</span>
+            <h2 style="color: #1a365d; margin-bottom: 1.5rem;">Contact Information</h2>
+
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>Head Office</h3>
+                    <p class="contact-phone">📞 +91 7635645456</p>
+                    <p>Crystal Tower, 12th Floor<br>
+                    Bandra Kurla Complex<br>
+                    Mumbai, Maharashtra 400051</p>
+                </div>
+
+                <div class="contact-item">
+                    <h3>Branch Head</h3>
+                    <p class="contact-phone">📞 +91 9877465856</p>
+                    <p>Prestige Trade Tower<br>
+                    Palace Road, Vasanth Nagar<br>
+                    Bangalore, Karnataka 560001</p>
+                </div>
+
+                <div class="contact-item">
+                    <h3>Property Broker</h3>
+                    <p class="contact-phone">📞 +91 9920482455</p>
+                    <p>DLF Cyber City<br>
+                    Sector 24, Gurugram<br>
+                    Haryana 122002</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const properties = [
+            {
+                id: 1,
+                image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3',
+                price: '$2,450,000',
+                title: 'Modern Luxury Penthouse',
+                location: 'Downtown Manhattan, NY',
+                beds: 4,
+                baths: 3,
+                sqft: 3200,
+                type: 'For Sale'
+            },
+            {
+                id: 2,
+                image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3',
+                price: '$8,500/month',
+                title: 'Waterfront Apartment',
+                location: 'Miami Beach, FL',
+                beds: 3,
+                baths: 2,
+                sqft: 2100,
+                type: 'For Rent'
+            },
+            {
+                id: 3,
+                image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3',
+                price: '$3,750,000',
+                title: 'Contemporary Villa',
+                location: 'Beverly Hills, CA',
+                beds: 5,
+                baths: 4,
+                sqft: 4500,
+                type: 'For Sale'
+            }
+        ];
+
+        function displayProperties() {
+            const grid = document.getElementById('propertiesGrid');
+            grid.innerHTML = '';
+
+            properties.forEach(property => {
+                const propertyCard = `
+                    <div class="property-card">
+                        <div class="property-image" style="background-image: url('${property.image}')">
+                            <div class="property-tag">${property.type}</div>
+                        </div>
+                        <div class="property-info">
+                            <div class="price">${property.price}</div>
+                            <h3>${property.title}</h3>
+                            <p>${property.location}</p>
+                            <div class="property-details">
+                                <span>🛏 ${property.beds} beds</span>
+                                <span>🚿 ${property.baths} baths</span>
+                                <span>📏 ${property.sqft} sq ft</span>
+                            </div>
+                            <div class="property-actions">
+                                <button class="edit-btn" onclick="editProperty(${property.id})">Edit</button>
+                                <button class="delete-btn" onclick="deleteProperty(${property.id})">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += propertyCard;
+            });
+        }
+
+        function deleteProperty(propertyId) {
+            if (confirm('Are you sure you want to delete this property?')) {
+                const index = properties.findIndex(p => p.id === propertyId);
+                if (index > -1) {
+                    properties.splice(index, 1);
+                    displayProperties();
+                }
+            }
+        }
+
+        function editProperty(propertyId) {
+            window.location.href = `add-property.html?edit=${propertyId}`;
+        }
+
+        function searchProperties() {
+            const location = document.querySelector('input[type="text"]').value.toLowerCase();
+            const propertyType = document.querySelector('select:nth-of-type(1)').value;
+            const priceRange = document.querySelector('select:nth-of-type(2)').value;
+
+            const filteredProperties = properties.filter(property => {
+                // Check location
+                const locationMatch = !location || property.location.toLowerCase().includes(location);
+
+                // Check property type
+                const typeMatch = !propertyType || property.title.toLowerCase().includes(propertyType.toLowerCase());
+
+                // Check price range
+                let priceMatch = true;
+                if (priceRange) {
+                    const propertyPrice = parseInt(property.price.replace(/[^0-9]/g, ''));
+                    switch (priceRange) {
+                        case '0-500000':
+                            priceMatch = propertyPrice <= 500000;
+                            break;
+                        case '500000-1000000':
+                            priceMatch = propertyPrice > 500000 && propertyPrice <= 1000000;
+                            break;
+                        case '1000000-plus':
+                            priceMatch = propertyPrice > 1000000;
+                            break;
+                    }
+                }
+
+                return locationMatch && typeMatch && priceMatch;
+            });
+
+            // Update the display with filtered properties
+            const grid = document.getElementById('propertiesGrid');
+            grid.innerHTML = '';
+
+            if (filteredProperties.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #4a5568; font-size: 1.2rem; padding: 2rem;">No properties found matching your criteria.</p>';
+                return;
+            }
+
+            filteredProperties.forEach(property => {
+                const propertyCard = `
+                    <div class="property-card">
+                        <div class="property-image" style="background-image: url('${property.image}')">
+                            <div class="property-tag">${property.type}</div>
+                        </div>
+                        <div class="property-info">
+                            <div class="price">${property.price}</div>
+                            <h3>${property.title}</h3>
+                            <p>${property.location}</p>
+                            <div class="property-details">
+                                <span>🛏 ${property.beds} beds</span>
+                                <span>🚿 ${property.baths} baths</span>
+                                <span>📏 ${property.sqft} sq ft</span>
+                            </div>
+                            <div class="property-actions">
+                                <button class="edit-btn" onclick="editProperty(${property.id})">Edit</button>
+                                <button class="delete-btn" onclick="deleteProperty(${property.id})">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += propertyCard;
+            });
+        }
+
+        function showContact() {
+            document.getElementById('contactModal').style.display = 'flex';
+        }
+
+        function closeContact() {
+            document.getElementById('contactModal').style.display = 'none';
+        }
+
+        window.onload = displayProperties;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactLink = document.querySelector('a[href="#contact"]');
+            contactLink.onclick = function(e) {
+                e.preventDefault();
+                showContact();
+            };
+        });
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('contactModal');
+            if (event.target == modal) {
+                closeContact();
+            }
+        }
+    </script>
+</body>
+</html>
